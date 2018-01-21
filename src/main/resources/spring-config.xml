@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:config.properties"/>
+
+    <!-- 扫描注解Bean 采用自定义命名策略工具类 -->
+    <context:component-scan base-package="cn.iutils" name-generator="cn.iutils.common.spring.JAnnotationBeanNameGenerator">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 开启AOP监听 只对当前配置文件有效 -->
+    <aop:aspectj-autoproxy expose-proxy="true"/>
+
+
+    <!-- 第一个数据源 -->
+    <bean id="dataSource_1" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    	<!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+	    <property name="driverClassName" value="${jdbc.driver}" />
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="${druid.initialSize}"/>
+        <property name="minIdle" value="${druid.minIdle}"/>
+        <property name="maxActive" value="${druid.maxActive}"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${druid.maxWait}"/>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+
+        <property name="validationQuery" value="${druid.validationQuery}" />
+        <property name="validationQueryTimeout" value="${druid.validationQueryTimeout}" />
+        <property name="testWhileIdle" value="${druid.testWhileIdle}" />
+        <property name="testOnBorrow" value="${druid.testOnBorrow}" />
+        <property name="testOnReturn" value="${druid.testOnReturn}" />
+        <property name="removeAbandoned" value="${druid.removeAbandoned}" />
+        <property name="removeAbandonedTimeout" value="${druid.removeAbandonedTimeout}" />
+        <property name="logAbandoned" value="${druid.logAbandoned}" />
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 oracle=true mysql=false -->
+        <property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
+
+   		<!-- 配置监控统计拦截的filters -->
+	    <property name="filters" value="${druid.filters}" />
+    </bean>
+
+    <!-- 第二个数据源 -->
+    <!--<bean id="dataSource_2" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">-->
+        <!--&lt;!&ndash; 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass &ndash;&gt;-->
+        <!--<property name="driverClassName" value="${jdbc2.driver}" />-->
+        <!--&lt;!&ndash; 基本属性 url、user、password &ndash;&gt;-->
+        <!--<property name="url" value="${jdbc2.url}"/>-->
+        <!--<property name="username" value="${jdbc2.username}"/>-->
+        <!--<property name="password" value="${jdbc2.password}"/>-->
+
+        <!--&lt;!&ndash; 配置初始化大小、最小、最大 &ndash;&gt;-->
+        <!--<property name="initialSize" value="${druid.initialSize}"/>-->
+        <!--<property name="minIdle" value="${druid.minIdle}"/>-->
+        <!--<property name="maxActive" value="${druid.maxActive}"/>-->
+
+        <!--&lt;!&ndash; 配置获取连接等待超时的时间 &ndash;&gt;-->
+        <!--<property name="maxWait" value="${druid.maxWait}"/>-->
+        <!--&lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;-->
+        <!--<property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />-->
+
+        <!--&lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;-->
+        <!--<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />-->
+
+        <!--<property name="validationQuery" value="${druid.validationQuery}" />-->
+        <!--<property name="validationQueryTimeout" value="${druid.validationQueryTimeout}" />-->
+        <!--<property name="testWhileIdle" value="${druid.testWhileIdle}" />-->
+        <!--<property name="testOnBorrow" value="${druid.testOnBorrow}" />-->
+        <!--<property name="testOnReturn" value="${druid.testOnReturn}" />-->
+        <!--<property name="removeAbandoned" value="${druid.removeAbandoned}" />-->
+        <!--<property name="removeAbandonedTimeout" value="${druid.removeAbandonedTimeout}" />-->
+        <!--<property name="logAbandoned" value="${druid.logAbandoned}" />-->
+
+        <!--&lt;!&ndash; 打开PSCache，并且指定每个连接上PSCache的大小 oracle=true mysql=false &ndash;&gt;-->
+        <!--<property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />-->
+        <!--<property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" />-->
+
+        <!--&lt;!&ndash; 配置监控统计拦截的filters &ndash;&gt;-->
+        <!--<property name="filters" value="${druid.filters}" />-->
+    <!--</bean>-->
+
+    <!-- 动态配置数据源 -->
+    <bean id ="dataSource" class= "cn.iutils.common.datasource.DynamicDataSource" >
+        <property name ="targetDataSources">
+            <map key-type ="java.lang.String">
+                <entry value-ref ="dataSource_1" key= "dataSource_1"></entry >
+                <!--<entry value-ref ="dataSource_2" key= "dataSource_2"></entry >-->
+            </map >
+        </property >
+        <property name ="defaultTargetDataSource" ref= "dataSource_1"></property >
+    </bean >
+
+    <!-- MyBatis begin -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:/mappings/**/*.xml"/>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+    </bean>
+    
+    <!-- 扫描basePackage下所有以@MyBatisDao注解的接口 -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        <property name="basePackage" value="cn.iutils"/>
+        <property name="annotationClass" value="cn.iutils.common.annotation.MyBatisDao"/>
+    </bean>
+    
+    <!-- 定义事务 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- 配置 Annotation 驱动，扫描@Transactional注解的类定义事务  -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    <!-- MyBatis end -->
+
+    <!-- 配置事务的传播特性 -->
+    <tx:advice id ="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes >
+            <tx:method name ="find*" read-only="true" />
+            <tx:method name ="get*" read-only="true" />
+            <tx:method name ="query*" read-only="true" />
+            <tx:method name ="save*" propagation="REQUIRED" />
+            <tx:method name ="add*" propagation="REQUIRED" />
+            <tx:method name ="update*" propagation="REQUIRED" />
+            <tx:method name ="delete*" propagation="REQUIRED" />
+        </tx:attributes >
+    </tx:advice >
+
+    <!-- 配置AOP -->
+    <aop:config >
+        <!-- 切点 多包配置 execution(* cn.iutils.*.service..*.*(..)) or execution(* com.company.*.service..*.*(..)) -->
+        <aop:pointcut expression ="execution(* cn.iutils.*.service..*.*(..))" id= "pointcut" />
+        <aop:advisor advice-ref ="txAdvice" pointcut-ref="pointcut" />
+    </aop:config >
+
+
+    <!-- Spring工具 -->
+    <bean class="cn.iutils.common.spring.SpringUtils"></bean>
+
+    <!-- 调度工厂 -->
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    </bean>
+
+    <!-- 导入shiro配置 -->
+    <import resource="classpath:spring-config-shiro.xml"/>
+
+</beans>
